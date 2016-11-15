@@ -1,36 +1,84 @@
-let arr = [];
+import $ from 'jquery'
 
-export function router(path, callback) {
-  path = (path === "/" ? /^\/$/m : path);
-  var o = {regex: ((/:[a-z]*/g).test(path) ? makeRegex(path) : (path === "*" ? /\/\w+/ : new RegExp(path))), callback: callback};
-  arr.push(o);
+var routes = [];
+
+export default function(route, func) {
+
+  if(route == null) {
+    $(document).on('click', 'a', handleLinkEvent);
+    $(window).on('popstate', handlePopStateEvent);
+    $(window).on('load', handleLoadEvent);
+  }
+  else {
+    registerRoutes(route, func);
+  }
 }
 
-export function goto(url){
-  for(var i=0; i < arr.length; i++){
-    if(arr[i].regex.test(url)){
-      var callback = arr[i].callback;
+function handleLinkEvent(event) {
+
+  var rel = $(event.currentTarget).attr('rel');
+
+  if(rel === 'download' || rel === 'external' || $(event.currentTarget).get(0).host !== location.host)
+  {
+    return;
+  }
+  event.preventDefault();
+
+  var href = $(event.currentTarget).attr('href');
+
+  navigate(href);
+}
+
+function handlePopStateEvent(event) {
+  navigate(history.state);
+}
+
+function handleLoadEvent() {
+  navigate(location.pathname);
+}
+
+function navigate(href) {
+
+  var isRegistered = false;
+
+  for (var obj of routes) {
+    if (obj.route.test(href)) {
+      isRegistered = true;
+
+      if (href != history.state) {
+        history.pushState(href, "title", href);
+      }
+
+      obj.func(href.split('/')[2]);
       break;
     }
   }
-
-  if(url !== null && url.indexOf('players') !== -1){
-    var surl = url.split("/");
-    callback(surl[surl.length-1]);
-  } else {
-    callback();
+  if(!isRegistered) {
+    routes[routes.length - 1].func();
   }
-
-  if(window.history.state !== url){
-    window.history.pushState(url, "", url);
-  }
-
-  return false;
 }
 
-function makeRegex(url){
-  var arr = url.match(/:[a-z]*/g);
-  var newURL = url.replace(arr[0], "[a-z](.*)");
+function registerRoutes(route, func) {
 
-  return new RegExp(newURL);
+  route = getRegExOfRoute(route);
+
+  var obj = {
+    route,
+    func
+  };
+  routes.push(obj);
+}
+
+function getRegExOfRoute(route) {
+  var regExToReplace = /:[a-z]{0,}(?=\/|$)/g;
+  var replaceWith = "[a-z]{1,}(?=\/|$)";
+
+  if(route !== '*') {
+    route = route.replace(regExToReplace, replaceWith);
+  }
+  else {
+    route = '\\*';
+  }
+
+  return new RegExp(route + '$');
 }
