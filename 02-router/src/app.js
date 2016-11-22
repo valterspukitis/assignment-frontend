@@ -20,7 +20,7 @@ function notFound() {
 }
 
 function players(dynamicPart) {
-    $app.html(playerTpl({dynamicPart}));
+  $app.html(playerTpl({dynamicPart}));
 }
 
 router('/', index);
