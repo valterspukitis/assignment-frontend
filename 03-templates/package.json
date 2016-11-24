@@ -1,5 +1,6 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
   "name": "02-router",
   "version": "1.0.0",
   "description": "Second Assignment for Frontend Development 1",
@@ -7,6 +8,11 @@
   "name": "03-templates",
   "version": "1.0.0",
   "description": "Third Assignment for Frontend Development 1",
+>>>>>>> upstream/master
+=======
+  "name": "02-router",
+  "version": "1.0.0",
+  "description": "Second Assignment for Frontend Development 1",
 >>>>>>> upstream/master
   "main": "index.js",
   "scripts": {

@@ -1,11 +1,13 @@
 import $ from 'jquery'
 import router from './router'
 import homeTpl from './templates/home.hbs'
-import playerTpl from './templates/player.hbs'
+import magnusTpl from './templates/magnus.hbs'
+import sergeyTpl from './templates/sergey.hbs'
 import contactTpl from './templates/contact.hbs'
 import notFoundTpl from './templates/not-found.hbs'
 
 const $app = $('#app')
+
 
 const $chessplayers = {
   'magnus': {
@@ -20,6 +22,7 @@ const $chessplayers = {
   }
 }
 
+
 function index() {
   $app.html(homeTpl())
 }
@@ -28,13 +31,17 @@ function contact() {
   $app.html(contactTpl())
 }
 
-function players(playerName) {
-  if(playerName == 'sergey')
-    $app.html(playerTpl($chessplayers.sergey))
-  else if(playerName == 'magnus')
-    $app.html(playerTpl($chessplayers.magnus))
-  else
-    $app.html(notFound())
+function players(ctx) {
+  let tpl = () => {}
+  switch (ctx.params.player) {
+    case 'magnus':
+      tpl = magnusTpl
+      break;
+    case 'sergey':
+      tpl = sergeyTpl
+      break;
+  }
+  $app.html(tpl())
 }
 
 function notFound() {
