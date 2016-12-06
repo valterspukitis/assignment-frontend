@@ -3,19 +3,25 @@ export function es5() {
     list: [1, 2, 3, 4, 5],
     result: 0,
     sum: function() {
-      var that = this
+      var that = this;
       this.list.forEach(function(val) {
-        that.result += val
+        that.result += val;
       })
     }
   }
 
-  o.sum()
+  o.sum();
 
   return o
 }
 
 export function es6() {
-  var sum = [1,2,3,4,5].reduce((sum,i) => sum + i);
-  return sum;
+  let o = {
+    list: [1, 2, 3, 4, 5],
+    result: 0,
+  }
+
+  o.result = o.list.reduce((sum, x) => sum + x);
+
+  return o
 }

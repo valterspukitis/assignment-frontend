@@ -39,5 +39,5 @@ export function es5() {
 }
 
 export function es6() {
-  // Just implement the test!
+
 }

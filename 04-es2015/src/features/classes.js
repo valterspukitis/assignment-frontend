@@ -11,4 +11,5 @@ export function es5(val) {
 }
 
 export function es6(val) {
+
 }
