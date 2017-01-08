@@ -16,5 +16,11 @@ export function es5(n) {
 
 // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Statements/function*
 export function es6(n) {
-
+  function* counter(n) {
+    let val = 0;
+    while (val++ < n){
+      yield val;
+    }
+  }
+  return counter(n);
 }
